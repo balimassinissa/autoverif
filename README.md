@@ -47,3 +47,24 @@ Effectue les vérifications sur la voiture :
 - Gain de temps (annonces validées par expert → moins de visites inutiles).
 - Valeur ajoutée grâce au consulting (prix juste, conseils).
 - Pour les agences : plus de marge et plus de clients crédibles.
+
+# Developpement
+
+Projet full-stack (backend + frontend + mobile) avec déploiement cloud et CI/CD.
+
+## Structure
+- backend/ : API
+- web/ : frontend
+- mobile/ : application mobile
+- infra/ : infrastructure as code (Terraform, Kubernetes)
+- ci/ : pipelines CI/CD
+- docs/ : documentation
+
+## Branch Strategy
+- `main` → Production
+- `develop` → Staging
+- `feature/*` → Nouvelles fonctionnalités
+- `hotfix/*` → Correctifs urgents
+
+## Contribution
+Voir [CONTRIBUTING.md](CONTRIBUTING.md).
