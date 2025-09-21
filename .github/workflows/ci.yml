@@ -66,9 +66,9 @@ jobs:
           MINIO_ROOT_USER: minio
           MINIO_ROOT_PASSWORD: minio123
         options: >-
+          server /data --console-address ":9001"
           --health-cmd "curl -fsS http://localhost:9000/minio/health/live || exit 1"
           --health-interval 10s --health-timeout 5s --health-retries 5
-        command: server /data --console-address ":9001"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
