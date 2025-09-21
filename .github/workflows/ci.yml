@@ -37,6 +37,7 @@ jobs:
             ${{ runner.os }}-npm-
 
       - name: Install dependencies
+        working-directory: backend
         run: npm ci --prefer-offline --no-audit --progress=false
         # npm ci requiert package-lock.json engagé (déterministe pour CI)
 
