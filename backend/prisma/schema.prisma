@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  role         String
+  email        String?  @unique
+  phone        String?
+  passwordHash String?
+  fullname     String?
+  isVerified   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  profilesExpert ProfilesExpert?
+  vehicles     Vehicle[]
+}
+
+model ProfilesExpert {
+  userId       String   @id
+  user         User     @relation(fields:[userId], references:[id])
+  siret        String?
+  certifications Json?
+  hourlyRate   Int?
+  availability Json?
+}
+
+
+model VehiclePhoto {
+  id         String  @id @default(uuid())
+  vehicleId  String
+  vehicle    Vehicle @relation(fields:[vehicleId], references:[id])
+  url        String
+  type       String?
+  createdAt  DateTime @default(now())
+}
+
+model Vehicle {
+  id         String   @id @default(uuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  vin        String?
+  marque     String?
+  modele     String?
+  annee      Int?
+  kilometrage Int?
+  prixDemande BigInt?
+  status     String   @default("draft")
+  createdAt  DateTime @default(now())
+  photos     VehiclePhoto[]
+  adverts    Advert[]
+}
+
+model Advert {
+  id          String  @id @default(uuid())
+  vehicleId   String
+  vehicle     Vehicle @relation(fields:[vehicleId], references:[id])
+  title       String?
+  description String?
+  location    Json?
+  publishedAt DateTime?
+  status      String @default("draft")
+}
+
+
+model Mission {
+  id          String   @id @default(uuid())
+  advertId    String?
+  expertId    String?
+  buyerId     String?
+  scheduledAt DateTime?
+  status      String   @default("pending")
+  priceCents  Int?
+  createdAt   DateTime @default(now())
+  checklist   Checklist?
+  certificate Certificate?
+}
+
+model Checklist {
+  id         String @id @default(uuid())
+  missionId  String @unique
+  mission    Mission @relation(fields:[missionId], references:[id])
+  dataJson   Json
+  verdict    String?
+  createdAt  DateTime @default(now())
+}
+
+model Certificate {
+  id               String @id @default(uuid())
+  missionId        String @unique
+  mission          Mission @relation(fields:[missionId], references:[id])
+  certificatePdfUrl String?
+  qrCode           String?
+  hash             String?
+  issuedAt         DateTime @default(now())
+}
